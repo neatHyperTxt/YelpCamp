@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/neatHyperTxt/YelpCamp#readme",
   "dependencies": {
+    "ejs": "^3.1.6",
     "express": "^4.17.2",
-    "mongoose": "^6.1.7"
+    "mongoose": "^6.1.7",
+    "nodemon": "^2.0.15"
   }
 }
