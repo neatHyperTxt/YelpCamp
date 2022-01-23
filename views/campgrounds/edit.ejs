@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Campground</title>
+</head>
+<body style="background-color: aliceblue;">
+    <form action="/campgrounds/<%=found._id%>?_method=PUT" method="POST">
+        <div>
+            <label for="title">Name</label>
+            <input value="<%=found.title%>" id="title" type="text" name="campground[title]">
+        </div>
+        <div>
+            <label for="location">Location</label>
+            <input value="<%=found.location%>" id="location" type="text" name="campground[location]">
+        </div>
+        <button>Update Campground</button>
+    </form>
+    <a href="/campgrounds/<%=found._id%> ">Back to Campgrounds</a>
+</body>
+</html>
