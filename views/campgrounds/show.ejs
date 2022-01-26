@@ -1,8 +1,26 @@
 <% layout('layouts/boilerplate') %> 
-    <h1>Campground:<%=found.title%></h1>
-    <h3><%=found.location%></h3>
-    <a href="/campgrounds">All Campgrounds</a>
-    <a href="/campgrounds/<%=found._id%>/edit">Edit This Campground</a>
-    <form action="/campgrounds/<%=found._id%>?_method=DELETE" method="POST">
-        <button>Delete Campground</button>
-    </form>
+
+<div class="row">
+    <div class="col-6 offset-3">
+        <div class="card mb-3">
+            <img src="<%=found.image%>" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title"><%=found.title%></h5>
+                <p class="card-text"><%=found.description%></p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-muted"><%=found.location%> </li>
+                <li class="list-group-item">$<%=found.price%>/night</li>
+            </ul>
+            <div class="card-body text-center">
+                <a class="card-link btn btn-warning" href="/campgrounds/<%=found._id%>/edit">Edit Campground</a>
+                <form class="d-inline" action="/campgrounds/<%=found._id%>?_method=DELETE" method="POST">
+                    <button class="btn btn-danger">Delete Campground</button>
+                </form> 
+            </div>
+            <div class="card-footer text-muted">
+                2 days Ago
+            </div>
+        </div>
+    </div>
+</div>
