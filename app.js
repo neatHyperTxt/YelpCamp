@@ -3,7 +3,7 @@ const app = express();
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
-const {campgroundSchema} = require('./schemas.js');
+const {campgroundSchema,reviewSchema} = require('./schemas.js');
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
 
@@ -13,8 +13,10 @@ db.on('error', console.error.bind(console, 'Connection Error'));
 db.once('open', () => {
     console.log('Database Connected');
 })
-const Campground = require('./models/campground');
 
+
+const Campground = require('./models/campground');
+const Review = require('./models/review');
 const path = require('path');
 
 app.set('view engine', 'ejs');
@@ -38,6 +40,18 @@ const validateCampground = (req,res,next)=>
         next();
     }
 }
+const validateReview = (req,res,next)=>
+{
+    const {error} = reviewSchema.validate(req.body);
+    if(error)
+    {
+        const msg = error.details.map(el=>el.message).join(',');
+        throw new ExpressError(msg,400);
+    }
+    else{
+        next();
+    }
+}
 app.get('/', (req, res) => {
     res.render('home');
 })
@@ -50,7 +64,16 @@ app.get('/campgrounds', catchAsync(async (req, res) => {
 app.get('/campgrounds/new', (req, res) => {
     res.render('campgrounds/new');
 })
-
+app.post('/campgrounds/:id/reviews',validateReview,catchAsync(async (req,res)=>
+{
+    const {id} = req.params;
+    const foundCampground = await Campground.findById(id);
+    const review = new Review(req.body.review);
+    foundCampground.reviews.push(review);
+    await review.save();
+    await foundCampground.save();
+    res.redirect(`/campgrounds/${id}`);
+}))
 
 app.post('/campgrounds',validateCampground,  catchAsync(async (req, res, next) => {
     const campground = new Campground(req.body.campground);
